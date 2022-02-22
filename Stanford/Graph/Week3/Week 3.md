@@ -138,8 +138,6 @@ rank의 경우, 23이 input이라고 하면, 23을 binary search로 찾는 것�
 
 그래서 Binary search Tree가 나온 것이다. 똑같이 다 지원하지만 insertion과 deletion을 더 빠른 속도로 지원한다.
 
-
-
 다른 연산들이 모두 O(logn)이지만, insertion and deletion이 O(logn)이다.
 
 만약 insertion과 deletion이 필요하다면 binary search tree가 가장 효율적인 방법이다.
@@ -152,93 +150,203 @@ heap의 경우에는 max/min value까지 필요한 경우
 
 ![Image](https://i.imgur.com/3SbOjcj.png)
 
-# Binary Search Tree : Operation
+# Binary Search Tree Basic
 
 ---
 
-
-
-![Image](https://i.imgur.com/i7oCWeA.png)
-
-
-
-![Image](https://i.imgur.com/btTTi6V.png)
-
-
-
-![Image](https://i.imgur.com/MXVpNB8.png)
-
-
-
-![Image](https://i.imgur.com/VtlfBRh.png)
-
-
+직전까지 이런 연산이 가능하다는 것을 보았다.
 
 ![Image](https://i.imgur.com/rjzNYjH.png)
 
+Binary Search Tree는 좌측은 자신의 Key보다 작아야하고, 우측은 자신의 Key보다 커야한다.
 
+Heap과는 다르다. Heap은 그냥 Parent가 child보다 작아야한다는 형태.
+
+Heap : 최소값 찾기 특화, Binary Search Tree : Search 특화
 
 ![Image](https://i.imgur.com/oopIKkM.png)
 
-
+BST는 Height(Depth)에 범위가 있다. $\log_2n$ ~ $n$ 
 
 ![Image](https://i.imgur.com/T0bJWKT.png)
 
+아래는 recursion을 이용한 BST의 Searching과 inserting에 관한 알고리즘
 
+rewire final NULL ptr = 마지막으로 찾은 그 포인터를 새로운 node를 만들 곳으로 정한다. 
+
+만약 중복값을 허용한다면, 같은 값은 왼쪽으로 보내는 convention을 두면 된다.
 
 ![Image](https://i.imgur.com/xVJzk7B.png)
 
+# Binary Search Tree Basic 2
 
+---
+
+ 일직선 형태로 있을 때에는 그냥 Queue랑 다를 게 없으니 최악의 상황이다.
 
 ![Image](https://i.imgur.com/4OA1M7p.png)
 
+이번에는 Min, Max를 찾는 방법을 보자.
 
+heap에서는 min과 max 중 하나만 쉽게 찾을 수 있었는데, BST는 둘 다 쉽게 찾을 수 있다.
+
+min의 경우
+
+- minus infinity를 찾는다고 해보자. 그럼 계속해서 왼쪽 subtree만 찾으면 된다. NULL pointer가 나올 때 까지
+
+- max도 반대로 하면된다.
+
+k의 predecessor 찾기 = next smallest
+
+- 좌측 subtree의 최대값
+
+- 좌측 subtree가 없는 경우, k보다 작은값이 나올 때까지 parent pointer 추적 (2, 4와 같은 case) (왼쪽 방향으로 최초 상승할 때 발견한다.)
 
 ![Image](https://i.imgur.com/lpjmN7W.png)
 
+이 경우도 마찬가지로 일렬로 나열되어있는 경우가 있을 것이다.
 
+따라서 $\Theta (height)$ 
 
 ![Image](https://i.imgur.com/laO1gtZ.png)
 
+오름차순 출력하기
 
+최소값 구하기를 각 TL과 TR에서 끝까지 계속 반복하면 될 것이다.
+
+시간 복잡도는 O(n) : 하나의 node에 대해서 한 번의 recursive call이기 때문이다. 그리고 recursive call에서는 O(1)이고
 
 ![Image](https://i.imgur.com/8f1utr7.png)
 
-# Red Black Tree
+삭제는 3가지 경우의 수가 있다.
+
+1. no children
+   
+   - 그냥 삭제
+
+2. one children
+   
+   - 남은 child가 그 자리를 채운다.
+
+3. 2 children
+   
+   - k의 다음 작은 값을 계산한다. 이를 l이라고 정한다.
+   
+   - k와 l을 swap
+   
+   - k를 지운다.
+
+predecessor를 찾는 과정이 있기에, 시간복잡도가 O(height)이다.
+
+![Image](https://i.imgur.com/i7oCWeA.png)
+
+![Image](https://i.imgur.com/btTTi6V.png)
+
+몇 번째 node를 선택하는 연산
+
+data of populated subtree를 추가 정보로 놓는다.
+
+**이를 size라고 이름 붙이고, 해당 subtree에 node가 몇개인지로 정의한다.**
+
+subtree 두개의 size를 알면 그 parent의 size도 쉽게 알 수 있다.
+
+그렇기에 insertion과 deletion 마다 그 data를 유지하기 쉽다.    
+
+![Image](https://i.imgur.com/MXVpNB8.png)
+
+아래는 pseudo code이다.
+
+**i는 찾는 수이고, a는 왼쪽 tree의 size**
+
+running time의 경우 최악의 경우에는 height만큼 이동이 가능하므로 **O(height)**이다.
+
+![Image](https://i.imgur.com/VtlfBRh.png)
+
+# Red Black Tree : Balanced Binary Search Tree
 
 ---
 
+balance를 유지하면 그 높이가 $log_2n$이 되는 것을 통해 빠르게 계산할 수가 있다.
 
+그래서 계속 balance를 유지하게 할 것이다.
 
-![Image](https://i.imgur.com/WyAZ6M1.png)
-
-
-
-![Image](https://i.imgur.com/aTlfxey.png)
-
-![Image](https://i.imgur.com/xyD6qeP.png)
+이 중에서 Red Black Tree에 대해서 알아볼 것이다.
 
 ![Image](https://i.imgur.com/67XU3o9.png)
 
+AVL, splay, B tree도 알면 좋다. 
+
+보통 이런 거는 database에 사용되는데, key가 여러개이고 그에 따른 branch가 여러 개 이다.
+
+
+
+Red Black의 특성
+
+어떻게 이 invariants는 height가 logarithmic하게 만드는가?
+
+
+
+1. red/black을 구분할 bit
+
+2. root는 black
+
+3. tree를 타고 내려갈 때 연속으로 red가 나올 수 없다.
+   
+   red node의 parent/child는 black이어야 한다.
+
+4. root에서 NULL까지의 경로는 모두 같은 black node 개수를 지닌다.
+
 ![Image](https://i.imgur.com/q4VwRcH.png)
+
+이 경우 마지막 4번의 invariant가 위반되어서 안된다.
 
 ![Image](https://i.imgur.com/iIxAHsm.png)
 
+맨 처음 3, 5, 7이 있을 때에도 문제가 없었다.
+
+만약 node 7에 6만 추가했다면 node 6이 red가 되어야 모든 invariant가 만족된다.
+
+
+
+이번에는 node 7에 6,8을 추가로 저장해보자.
+
+이경우 node 7이 red가 되면 모든 invariant가 만족된다.
+
+
+
+즉, **추가 한 번만 할 때에는 추가한 곳에 red를 놓고, 그 곳에 하나가 더 축가되면 red를 그 parent로 올려준다.**
+
 ![Image](https://i.imgur.com/90lTE9s.png)
+
+다른 방법으로 binary함을 유지하려면 회전과 같은 연산을 하면된다.
+
+
+
+위의 네가지 invariant를 지키면 height가 $2log_2(n + 1)$으로, 연산이 빨라진다.
+
+k는 tree의 최소 길이라고 둔다. 즉 path에 black만 있다는 의미
+
+이렇게 되면 tree의 size의 lower bound도 $2^k - 1$이 된다.
 
 ![Image](https://i.imgur.com/PL0nQHB.png)
 
+최악의 경우에는 red와 black이 반복되는 경우가 생길 수 있다. 이 때에는 path length가 매우 2배가 되므로 "By 3rd Invairant"가 성립한다.
+
 ![Image](https://i.imgur.com/0UWRlOS.png)
 
-# 
+따라서 모든 연산이 O(logn)이다.
+
+# Rotation (Optional)
 
 ---
+
+![Image](https://i.imgur.com/WyAZ6M1.png)
 
 ![Image](https://i.imgur.com/ltSVW41.png)
 
 ![Image](https://i.imgur.com/xImpSuC.png)
 
-# 
+# Red Black Tree Insertion (Optional)
 
 ---
 
