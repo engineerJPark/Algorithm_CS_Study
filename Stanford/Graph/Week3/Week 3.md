@@ -278,13 +278,9 @@ AVL, splay, B tree도 알면 좋다.
 
 보통 이런 거는 database에 사용되는데, key가 여러개이고 그에 따른 branch가 여러 개 이다.
 
-
-
 Red Black의 특성
 
 어떻게 이 invariants는 height가 logarithmic하게 만드는가?
-
-
 
 1. red/black을 구분할 bit
 
@@ -306,21 +302,15 @@ Red Black의 특성
 
 만약 node 7에 6만 추가했다면 node 6이 red가 되어야 모든 invariant가 만족된다.
 
-
-
 이번에는 node 7에 6,8을 추가로 저장해보자.
 
 이경우 node 7이 red가 되면 모든 invariant가 만족된다.
-
-
 
 즉, **추가 한 번만 할 때에는 추가한 곳에 red를 놓고, 그 곳에 하나가 더 축가되면 red를 그 parent로 올려준다.**
 
 ![Image](https://i.imgur.com/90lTE9s.png)
 
 다른 방법으로 binary함을 유지하려면 회전과 같은 연산을 하면된다.
-
-
 
 위의 네가지 invariant를 지키면 height가 $2log_2(n + 1)$으로, 연산이 빨라진다.
 
