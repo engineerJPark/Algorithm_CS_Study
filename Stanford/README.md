@@ -31,7 +31,7 @@ Notes are written by markdown, implementation of programming assignment is done 
 
 ### C++
 
-[liuhh02/stanford-algorithms-specialization: Problem Set and Programming Assignment Solutions to Stan (notion.so)](https://www.notion.so/liuhh02-stanford-algorithms-specialization-Problem-Set-and-Programming-Assignment-Solutions-to-Stan-ba31ae9b56e34dccaa03af073fe33233)
+[liuhh02/stanford-algorithms-specialization: Problem Set and Programming Assignment Solutions to Stan (github.com)](https://github.com/liuhh02/stanford-algorithms-specialization)
 
 ### Python
 
