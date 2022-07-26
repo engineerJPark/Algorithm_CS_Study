@@ -98,5 +98,23 @@ Greedy Algorithm은 일반적으로는 보통 not correct하다. 이를 유념�
      - greedy algorithm의 output으로 변경하는 횟수는 induction처럼 구해야한다.
 3. anything
 
----
+
+## Application: Optimal Caching
+
+Cache Memory는 작고 빠른 메모리이다. 저장 공간이 작아서, 기존 데이터를 지우고 새로 써야하는 경우가 발생한다.
+
+![Image](https://i.imgur.com/MEfuC0A.png)
+
+다음을 보자. 문제는 cache에 없는 것에 대해서 접근이 요청될 때 발생한다. 이를 fault라고 하는 것이다.
+e, f를 받을 때 fault가 발생했고, 그 뒤에 오는 a, b는 e, f로 교체됨에 따라 접근이 또 불가능해졌다.
+
+![Image](https://i.imgur.com/Qf3zq4Q.png)
+
+이 문제를 푸는 natural greedy algorithm 중 optimal한 algorithm을 “furthest-in-future” algorithm이라고 부른다.
+
+![Image](https://i.imgur.com/nPpJKSG.png)
+
+----
+
+## Scheduling Application
 
