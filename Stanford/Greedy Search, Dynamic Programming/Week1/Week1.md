@@ -118,3 +118,183 @@ e, f를 받을 때 fault가 발생했고, 그 뒤에 오는 a, b는 e, f로 교�
 
 ## Scheduling Application
 
+작업에 weight와 length가 주어질 때, 어떻게 배치하는 것이 가장 효율적인가?
+
+기본적으로 각 job에는 weight와 length가 주어진다고 하자.
+
+![Image](https://i.imgur.com/lrWJX6M.png)
+
+다음과 같은 경우 각 task 별 종료 시간은 다음과 같다.
+
+![Image](https://i.imgur.com/zUe5XjT.png)
+
+여기에 weight가 추가되는 경우, 다음과 같이 계산해야한다.
+
+![Image](https://i.imgur.com/fibGMM4.png)
+
+이 score function을 분석하자. 이 score function은 weight가 큰 것이 빠르게 올 수록 유리하고,
+length가 작은 것이 빠르게 올 수록 유리하다.(score function = completion time이 작아진다.)
+
+![Image](https://i.imgur.com/xwdiP19.png)
+
+하지만 이를 동시에 고려하는 것은 어렵다. 이를 위해서 score를 따로 지정해주어서 task의 순서를 지정한다.
+
+아래와 같이 빼기 혹은 나누기를 통해서 정할 수 있다.
+
+이 둘 중 더 우수한 것을 고르기 위해서는, 다른 하나의 task가 부적절함을 보여야한다.
+
+![Image](https://i.imgur.com/d132OPw.png)
+
+아래의 경우와 같이, 나누기거 더 좋은 선택임을 볼 수 있다.
+
+빼기의 경우 task 1 = -2, task 2 = -1이고
+나누기의 경우 task 1 = 0.6, task 2 = 0.5이다.
+
+빼기 score와 나누기 score 모두, 그 score가 큰 것이 더 앞으로 나와야한다.
+
+따라서 빼기는 task2가 먼저 실행되고, 그 결과 23 score를 보인다.
+나누기는 task1이 먼저 실행되어, 그 결과 22 score를 보인다.
+
+![Image](https://i.imgur.com/dEBtzJu.png)
+
+이를 정리하면 다음과 같이 score를 나누기로 정의할 수 있고, running time은 O(nlogn)이 된다.
+이는 sorting만 수행하면 되기 때문이다.
+
+![Image](https://i.imgur.com/X6zo9FD.png)
+
+# Proof of the Scheduling Application
+
+위의 Claim을 어떻게 증명할 것인가?
+
+기존 greedy schedule보다 더 성능이 좋은 sigma\*를 가정하고, 이 sigma\*보다 더 좋은 성능의 알고리즘이 있음을 증명해서 contradiction을 만들어 증명할 것이다.
+
+![Image](https://i.imgur.com/gPdHGvt.png)
+
+앞서 말했듯이 score가 클 수록 일찍와야한다. 그리고 sigma*는 이 순서를 반대로 뒤집은 단 두 개의 index i,j 순서대로 schedule을 잡아놓는다.
+
+![Image](https://i.imgur.com/C1qNZBV.png)
+
+다음을 보자.
+sigma*에 있는 i, j 작업을 서로 변경해줘서 새로운 schedule을 만든다.
+
+![Image](https://i.imgur.com/58Ur083.png)
+
+이렇게 했을 때 어떤 일이 발생하는가?
+우선 후순위로 밀린 작업은 completion time이 늘어나고, 선순위로 당겨진 작업은 completion time이 줄어들게 된다.
+
+![Image](https://i.imgur.com/64PMqsX.png)
+
+이렇게 얻게된 exchange의 부산물을 cost / benefit of exchange라고 한다.
+이들의 계산은 아래와 같이 하면 된다.
+
+이 때, 아래의 계산과 같이, benefit이 cost보다 더 크므로, sigma*보다 새로운 schedule이 더 효과적임을 알 수 있다.
+
+즉, sigma*는 존재하지 않는다. 따라서 초기의 주장이 옳다.
+
+![Image](https://i.imgur.com/47w2xsS.png)
+
+# MST : Minimum Spanning Trees
+
+Minimum Spanning Tree란?
+각 지점을 가장 저비용으로 연결하는 것이 목표이다.
+
+heap structure를 이용해서 알고리즘의 빠른 속도를 이용한다.
+
+Kruskal Algorithm의 경우, union fine data structure를 새로 정의하여 사용한다.
+
+![Image](https://i.imgur.com/4sJJgvl.png)
+
+오로지 undirected graph에서만 문제가 정의된다.
+
+Spans all vertices라는 것의 의미는 다음과 같다.
+
+- 루프가 없어야한다.
+- 모든 두 subgraph(혹은 vertex)가 연결되어야 한다.
+
+![Image](https://i.imgur.com/JC85K3p.png)
+
+본 강의에서는 다음과 같이 가정을 한다.
+
+첫 번째 가정이 지켜지지 않을 경우, forest가 생기고, 이를 위해서는 minimum spanning forest를 푸는 방식으로 발전해야한다.
+
+두 번째 가정은 깨지더라도, Prim 알고리즘과 Kruskal 알고리즘은 그대로 MST를 구한다.
+
+![Image](https://i.imgur.com/3wFEMXX.png)
+
+## Prim's MST Algorithm
+
+다익스트라 알고리즘과 매우 유사하다.
+
+다익스트라는 시작점이 명확히 있었지만, 여기서는 아니다.
+그러나 임의로 시작점을 지정해서 시작해도 상관없다.
+
+다음의 순서를 따른다고 하자.
+- 우측상단을 시작점으로 잡는다.
+- cheapest한 cost 1의 edge를 선택한다.
+- 이렇게 spanning tree가 일부 발생한다.
+- 그 다음 또 cheapest한 cost 2의 edge를 고른다.
+- 이제 cost 3 edge는 vertex를 추가하지 못하므로 제외한다.
+- 이제 나머지 cost 4 edge를 선택한다.
+
+이렇게 Minimum Cost Spanning Tree가 완성된다.
+
+![Image](https://i.imgur.com/DVKMqni.png)
+
+이제부터는 Pseudo Code를 보자.
+
+- X는 spanning에 추가된 정점
+- T는 edge를 추가한다.
+- 알고리즘은 모든 vertex를 span할 때까지 반복한다.
+- edge는 하나의 정점이 X에 포함되게 하나는 X 밖에 있는 edge를 선택한다.
+
+![Image](https://i.imgur.com/MSNqIhh.png)
+
+Prim 알고리즘은 spanning tree를 minimum cost로 반환하는 것이 자명하다.
+
+이를 증명하려면, 다음과 같이한다.
+
+- spanning tree를 하나 만든다. 최소가 아니라고 가정하고
+- 그리고 이것이 최소임을 보인다.
+
+![Image](https://i.imgur.com/tKh38EJ.png)
+
+## Correctness Proof
+
+![Image](https://i.imgur.com/F3WxXU2.png)
+
+![Image](https://i.imgur.com/m1EqwX8.png)
+
+![Image](https://i.imgur.com/VzWcG6G.png)
+
+![Image](https://i.imgur.com/FjNFcBJ.png)
+
+![Image](https://i.imgur.com/ueRfcCt.png)
+
+![Image](https://i.imgur.com/XGN6xdD.png)
+
+![Image](https://i.imgur.com/jaRfanF.png)
+
+![Image](https://i.imgur.com/BMMRoXo.png)
+## Proof of Cut Property (Skip)
+
+![Image](https://i.imgur.com/cRkAwGe.png)
+
+![Image](https://i.imgur.com/K8jhiiT.png)
+
+![Image](https://i.imgur.com/WtpoIu2.png)
+
+![Image](https://i.imgur.com/uyY76Jf.png)
+
+![Image](https://i.imgur.com/T83TZDi.png)
+
+# Fast Implementation
+
+![Image](https://i.imgur.com/EyYZV6Q.png)
+
+![Image](https://i.imgur.com/iIEqNmY.png)
+
+![Image](https://i.imgur.com/suU9zRV.png)
+
+![Image](https://i.imgur.com/L29eMpD.png)
+
+![Image](https://i.imgur.com/NpM3Jzg.png)
