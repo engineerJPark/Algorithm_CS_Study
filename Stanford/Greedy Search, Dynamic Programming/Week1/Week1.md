@@ -260,21 +260,69 @@ Prim 알고리즘은 spanning tree를 minimum cost로 반환하는 것이 자명
 
 ## Correctness Proof
 
+이번에는 증명을 한다.
+우선 spanning tree임을 증명하고, 그 이후에 minimum임을 증명하는 방향으로 간다.
+
+cut이 그래서 무엇인가?
+cut이란 graph의 vertex를 모은 집합으로, 두 개의 cut 사이의 cross edge에 대해서 분석하기 위하여 존재하는 개념이다.
+
 ![Image](https://i.imgur.com/F3WxXU2.png)
+
+간단한 퀴즈. 각 cut에 vertex를 배정한다고 하면 $2^n$만큼의 cut이 발생할 것이다.
 
 ![Image](https://i.imgur.com/m1EqwX8.png)
 
+- Empty Cut Lemma
+
+not connected = crossing edge가 없는 cut이 존재한다.
+
+우측의 명제를 통해서 좌측의 명제를 보인다.
+각 cut에 존재하는 u와 v에서 서로 연결하는 edge(crossing edge)가 없으므로,
+이는 곧 not connected 상태임을 말한다.
+
+이번엔 반대의 방향으로 보인다.
+그래프 G에서 u-v path가 없는 것을 찾자.
+
+여기서 A = {u의 connected component = vertices reachable from u in G}, B = {A에 없는 모든 vertices}
+라고 정의하면, A와 B의 cut은 u-v path가 없게된다.
+
+즉, not connected = crossing edge가 없는 cut이 존재한다.
+
 ![Image](https://i.imgur.com/VzWcG6G.png)
+
+증명에 필요한 다른 두 가지 명제
+
+- Double Crossing Lemma 
+
+grasph에서 cycle이 있다면, cut의 사이를 최소한 두 번 crossing해야한다.
+
+- Lonely Cut Corollary
+
+하나의 edge만 crossing을 한다면, cycle은 없다.
 
 ![Image](https://i.imgur.com/FjNFcBJ.png)
 
+다음과 같이 spanning 하다는 것을 증명할 수 있다.
+
+1. 알고리즘은 edge 모음 T가 X를 span하게 한다는 것이 목표이다.
+2. X != V인 상황에서는 멈추지 않는다. 그렇지 않다면 새로 구한 x가 연결되는 edge가 없는 상황 뿐이다. 그 결과 X, V-X가 만드는 empty cut여야한다. by Empty Cut Lemma. 따라서 span all the vertices.
+3. T의 추가로 인해서 사이클이 생기지 않는다. 왜냐하면 두 cut X, V-X의 crossing edge만을 그것도 하나만을 추가하는 일이기 때문이다. cycle이라면 X에 존재하는 edge를 선택해야한다. by Lonely Cut corollary. 따라서 No Cycle.
+
 ![Image](https://i.imgur.com/ueRfcCt.png)
+
+
 
 ![Image](https://i.imgur.com/XGN6xdD.png)
 
+
+
 ![Image](https://i.imgur.com/jaRfanF.png)
 
+
+
 ![Image](https://i.imgur.com/BMMRoXo.png)
+
+
 ## Proof of Cut Property (Skip)
 
 ![Image](https://i.imgur.com/cRkAwGe.png)
