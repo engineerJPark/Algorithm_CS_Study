@@ -310,18 +310,27 @@ grasph에서 cycle이 있다면, cut의 사이를 최소한 두 번 crossing해�
 
 ![Image](https://i.imgur.com/ueRfcCt.png)
 
-
+Prim Algorithm이 cut property를 만족한다면, 이는 safe하다.
 
 ![Image](https://i.imgur.com/XGN6xdD.png)
 
+이제 이 cut property를 이용해서 증명을 한다.
+이 성질이 성립하면, MST가 성립한다.
+매번의 vertex에 대하여, 최소 cost의 crossing edge를 고르면, 그 edge는 MST에 포함된다.
 
+또한, 모든 cost가 다르다면, 그 MST는 unique하다.
 
 ![Image](https://i.imgur.com/jaRfanF.png)
 
+그대로 이어서 증명하자면, Cut property에 의하여, Prim's Algorithm이 맞다는 것을 증명한다.
 
+앞에서 보인 내용 상으로, Prim's Algorithm은 spanning tree를 출력하고, 
+cut property에 의하여 각각의 edge가 MST를 구성하는 것을 알 수 있다.
+
+MST가 구성된 상황에서 더 edge가 추가되면 cycle이 생기므로,
+더 추가되는 edge는 없이 T\*이 MST를 구성한다.
 
 ![Image](https://i.imgur.com/BMMRoXo.png)
-
 
 ## Proof of Cut Property (Skip)
 
@@ -337,12 +346,38 @@ grasph에서 cycle이 있다면, cut의 사이를 최소한 두 번 crossing해�
 
 # Fast Implementation
 
+반복은 n - 1 한다.
+
+그리고 각 iteration마다 m - n개의 edge 선별 시간이 걸린다.
+
 ![Image](https://i.imgur.com/EyYZV6Q.png)
+
+Heap은 어디에 쓸 것인가?
+
+최소 cost의 edge 혹은 vertex를 가져오는 데 쓸 것이다.
+
+heap은 insert, extract-min/max, delete가 모두 O(logn)이 걸린다.
+그 결과, Prim Algorithm을 O(mlogn)으로 구현할 수 있게해준다.
+
+heap에는 V-X의 vertice를 넣고, V-X에서는 key[v] = cheapest cost edge (u,v) in X
+
+초기화하는 데, start vertex에서 m개의 edge를 탐색하고, 또한 heap에 V-X를 넣어줘야하므로, O(m + nlogn) = O(mlogn)의 시간이 걸린다.
+여기서 m은 아무리 적어도 n-1이므로, n을 m으로 교체할 수 있다.
 
 ![Image](https://i.imgur.com/iIEqNmY.png)
 
+여기서부터 다시 시작해보자.
+처음에는 v = 2, w = 10이고, 한번 cost 2인 edge를 선택하고 나면,
+w = 1인 crossing edge가 남게된다. 이 edge의 cost는 1이다.
+
 ![Image](https://i.imgur.com/suU9zRV.png)
 
+이제는 X에 하나 추가될 때, 새롭게 crossing edge를 계산하는 알고리즘을 보인다.
+
 ![Image](https://i.imgur.com/L29eMpD.png)
+
+다음 결과에 따라서, 최종적인 시간 복잡도는 O(mlogn)이다.
+
+이는 한 번 vertex를 선택해서 삭제/삽입하는 일을 할 때마다 logN의 시간복잡도가 소요되므로, 이를 edge 개수만큼 반복하게 되기 때문이다.
 
 ![Image](https://i.imgur.com/NpM3Jzg.png)
